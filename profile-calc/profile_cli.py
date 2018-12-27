@@ -32,15 +32,15 @@ def main(key, user):
     brk()
     with open("result.txt", "w") as f:
         for i in sorted_list:
-            f.write(i[0])
+            f.write(i[0] + "\n")
             f.write("Old: {:.2f}pp\n".format(i[2]))
             f.write("New: {:.2f}pp\n".format(i[1]))
-            f.write("Percentage: {:.2g}%\n".format(100 * i[2] / i[1]))
+            f.write("Percentage: {:.2f}%\n".format(100 * i[2] / i[1]))
             f.write("\n")
             click.echo(i[0])
             click.echo("Old: {:.2f}pp".format(i[2]))
             click.echo("New: {:.2f}pp".format(i[1]))
-            click.echo("Percentage: {:.2g}%".format(100 * i[2] / i[1]))
+            click.echo("Percentage: {:.2f}%".format(100 * i[2] / i[1]))
             brk()
         f.write("old pp: {:.2f}\n".format(profile_pp))
         f.write("new pp: {:.2f}\n".format(new_pp + (profile_pp - old_pp)))
