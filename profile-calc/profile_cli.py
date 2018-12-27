@@ -7,8 +7,7 @@ def brk():
 @click.command()
 @click.option('--key', default="", help="osu! API key.")
 @click.option('--user', default="", help="User to be calculated.")
-@click.option("--limit", default=100, help="Limit top n score (Default: 100 | Max: 100)")
-def main(key, user, limit):
+def main(key, user):
     if not key:
         click.echo("Please input osu! API key!")
         return
