@@ -86,19 +86,19 @@ def pp_calc(aim, speed, b, misses, c100, c50, used_mods=mods(), combo=0xFFFF, sc
     ar_bonus = 1.0
 
     if ar > 10.33:
-        ar_bonus += 0.45 * (ar - 10.33)
+        ar_bonus += 0.3 * (ar - 10.33)
     elif ar < 8:
         low_ar_bonus = 0.01 * (8 - ar)
-
-        if used_mods.hd:
-            low_ar_bonus *= 2.0
+        # hd rebalance
+        #if used_mods.hd:
+        #    low_ar_bonus *= 2.0
 
         ar_bonus += low_ar_bonus
 
     aim_value *= ar_bonus
 
     if used_mods.hd:
-        aim_value *= 1.02 + (11 - ar) / 50
+        aim_value *= 1.0 + 0.04 * (12 - ar)
 
     if used_mods.fl:
         aim_value *= 1.45 * length_bonus
@@ -106,24 +106,29 @@ def pp_calc(aim, speed, b, misses, c100, c50, used_mods=mods(), combo=0xFFFF, sc
     acc_bonus = 0.5 + acc / 2.0
 
     od_bonus = 0.98 + math.pow(od, 2) / 2500.0
-
     aim_value *= acc_bonus
     aim_value *= od_bonus
 
     res.aim_pp = aim_value
 
     speed_value = base_strain(speed)
-
-    print(length_bonus)
-
+    # high ar rebalance
+    ar_bonus_2 = 1.0
+    if ar > 10.33:
+        ar_bonus_2 += 0.3 * (ar - 10.33)
+    speed_value *= ar_bonus_2
     speed_value *= length_bonus
     speed_value *= miss_penalty
     speed_value *= combo_break
-    speed_value *= acc_bonus
-    speed_value *= od_bonus
+    #speed_value *= acc_bonus
+    #speed_value *= od_bonus
+    # speed acc rebalance
+    speed_value *= (
+        1.0 / (
+            1.0 + math.exp(-20.0 * (acc + pow(od, 2.0) / 2310.0 - 0.8733 )))) / 1.89 + pow(od, 2.0) / 5000 + 0.49
 
     if used_mods.hd:
-        speed_value *= 1.18
+        speed_value *= 1.0 + 0.04 * (12 - ar)
 
     res.speed_pp = speed_value
 
@@ -142,7 +147,7 @@ def pp_calc(aim, speed, b, misses, c100, c50, used_mods=mods(), combo=0xFFFF, sc
     acc_value *= min(1.15, math.pow(circles / 1000.0, 0.3))
 
     if used_mods.hd:
-        acc_value *= 1.02
+        acc_value *= 1.08
 
     if used_mods.fl:
         acc_value *= 1.02
