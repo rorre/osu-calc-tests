@@ -6,6 +6,7 @@ import b_info
 import configparser
 import profile_map_calc
 from beatmap import Beatmap
+from tqdm import tqdm
 
 
 def return_values(user, key):
@@ -17,7 +18,7 @@ def return_values(user, key):
 
     number = 0
 
-    for i in js:
+    for i in tqdm(js):
         beatmap_id = int(i['beatmap_id'])
         combo = int(i['maxcombo'])
         c100 = int(i['count100'])
