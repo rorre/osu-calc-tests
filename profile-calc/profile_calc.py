@@ -11,27 +11,20 @@ from beatmap import Beatmap
 def return_values(user, key):
 
     url = 'https://osu.ppy.sh/api/get_user_best?k={}&u={}&limit=100'.format(key, user)
-    jsonurl = str(requests.get(url).text)
-    jsonurl = jsonurl[1:-2]
-    maps_split = [i[1:] for i in jsonurl.split("},")]
-    maps_info = []
-    for i in range(len(maps_split)):
-        maps_info.append([])
-        info_list = maps_split[i].split(",")
-        maps_info[i] = [(x.split(":")[0][1:-1], ":".join(x.split(":")[1:])[1:-1]) for x in info_list]
+    js = requests.get(url).json()
 
     pp_info = []
 
     number = 0
 
-    for i in maps_info:
-        beatmap_id = int(i[0][1])
-        combo = int(i[2][1])
-        c100 = int(i[4][1])
-        c50 = int(i[3][1])
-        miss = int(i[6][1])
-        mods = int(i[10][1])
-        old_pp = float(i[14][1])
+    for i in js:
+        beatmap_id = int(i['beatmap_id'])
+        combo = int(i['maxcombo'])
+        c100 = int(i['count100'])
+        c50 = int(i['count50'])
+        miss = int(i['countmiss'])
+        mods = int(i['enabled_mods'])
+        old_pp = float(i['pp'])
 
         number += 1
         print(number)

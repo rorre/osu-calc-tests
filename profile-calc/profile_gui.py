@@ -54,36 +54,22 @@ def sort_values(sort_by):
 
 
 
-try:
-    url = 'https://osu.ppy.sh/api/get_user?k={}&u={}'.format(key, username)
-    jsonurl = str(requests.get(url).text)
-    jsonurl = jsonurl[1:-2]
-    profile_split = jsonurl.split("},")[0]
-    profile_info = profile_split[1:-1].split(",")
-    profile_list = [i.split(":") for i in profile_info]
-    profile_pp = float(profile_list[11][1][1:-1])
-except:
-    try:
-        url = 'https://osu.ppy.sh/api/get_user?k={}&u=peppy'.format(key)
-        jsonurl = str(requests.get(url).text)
-        jsonurl = jsonurl[1:-2]
-        profile_split = jsonurl.split("},")[0]
-        profile_info = profile_split[1:-1].split(",")
-        profile_list = [i.split(":") for i in profile_info]
-        profile_pp = float(profile_list[11][1][1:-1])
-    except:
-        while True:
-            root = Tk()
-            root.title("osu-calc")
+url = 'https://osu.ppy.sh/api/get_user?k={}&u={}'.format(key, username)
+js = requests.get(url).json()
+if type(js) == dict and "error" in js.keys():
+    while True:
+        root = Tk()
+        root.title("osu-calc")
 
-            w = Text(root)
-            w.insert(1.0,"Invalid API key. Make sure that you have typed your API key correctly.")
-            w.pack()
-            w.configure(state="disabled")
+        w = Text(root)
+        w.insert(1.0, "Invalid API key. Make sure that you have typed your API key correctly.")
+        w.pack()
+        w.configure(state="disabled")
 
-            root.protocol("WM_DELETE_WINDOW", kill)
+        root.protocol("WM_DELETE_WINDOW", kill)
 
-            root.mainloop()
+        root.mainloop()
+if not js:
     while True:
         root = Tk()
         root.title("osu-calc")
@@ -96,6 +82,8 @@ except:
         root.protocol("WM_DELETE_WINDOW", kill)
 
         root.mainloop()
+
+profile_pp = float(js[0]['pp_raw'])
 
 while True:
 
